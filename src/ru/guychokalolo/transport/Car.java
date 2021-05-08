@@ -1,0 +1,16 @@
+package ru.guychokalolo.transport;
+
+public class Car extends Transport {
+
+    public Car(String color, int wheel, int numberOfPersons, String name) {
+        super(color, wheel, numberOfPersons, name);
+
+    }
+
+
+    @Override
+    public String getInfoTransport() {
+        return "color = " + color + ", " + "wheel = " + Integer.toString(wheel)+
+                ", " + "numberOfPersons = " + Integer.toString(numberOfPersons) + ", " + "name = " +name ;
+    }
+}
