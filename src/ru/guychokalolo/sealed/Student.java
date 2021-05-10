@@ -4,7 +4,6 @@ package ru.guychokalolo.sealed;
 import ru.guychokalolo.status.Status;
 
 public final class Student extends Human  {
-
     private String name;
     private int age;
     private Double sumPoints;

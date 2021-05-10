@@ -8,7 +8,6 @@ public class Bus extends Transport{
 
     @Override
     public String getInfoTransport() {
-
         return "color = " + color + ", " + "wheel = " + Integer.toString(wheel)+
                  ", " + "numberOfPersons = " + Integer.toString(numberOfPersons) + ", " + "name = " +name ;
     }

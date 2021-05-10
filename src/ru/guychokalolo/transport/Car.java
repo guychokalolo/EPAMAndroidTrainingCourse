@@ -4,9 +4,7 @@ public class Car extends Transport {
 
     public Car(String color, int wheel, int numberOfPersons, String name) {
         super(color, wheel, numberOfPersons, name);
-
     }
-
 
     @Override
     public String getInfoTransport() {

@@ -3,14 +3,11 @@ package ru.guychokalolo.teacher;
 import java.util.Objects;
 
 public class Teacher {
-
     private String name;
     private String surName;
     private int age;
     private String _class;
     private int stage;
-
-
 
     public Teacher(String name, String surName, int age, String _class, int stage){
         this.name = name;
@@ -19,8 +16,6 @@ public class Teacher {
         this._class = _class;
         this.stage = stage;
     }
-
-
 
     @Override
     public boolean equals(Object o) {
@@ -35,12 +30,10 @@ public class Teacher {
 
     @Override
     public int hashCode() {
-            //return Objects.hash(this.name);
-    int hash = 28;
-    int result = 1;
-    result = hash * result +((name==null)? 0 : name.hashCode());
-
-            return result;
+        int hash = 28;
+        int result = 1;
+        result = hash * result +((name==null)? 0 : name.hashCode());
+        return result;
     }
 
     @Override
