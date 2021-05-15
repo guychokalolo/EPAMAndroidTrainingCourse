@@ -22,7 +22,4 @@ fun main(args: Array<String>) {
 
     val userInline = User("Kevin", "Tommy", 26)
     userInline.highInline(user.name,::addMessage)
-
-
-
 }
