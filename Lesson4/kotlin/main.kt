@@ -1,4 +1,4 @@
-import extensions.getFieldUser
+import extensions.printUserFields
 import extensions.highInline
 import extensions.mapToUseUiModel
 import user.User
@@ -12,14 +12,14 @@ typealias UserAlias = User
 
 fun main(args: Array<String>) {
     val user=User("John","Westbrook", 21)
-    user.getFieldUser("Hello world", ::addMessage)
+    user.printUserFields("Hello world", ::addMessage)
 
     val nameUiModel = user.mapToUseUiModel()
-    println("name User = ${nameUiModel.surName}, surName User = ${nameUiModel.name}")
+    println("surname User = ${nameUiModel.surName}, name User = ${nameUiModel.name}")
 
     val userAlias = UserAlias("Steven", "Butler", 29)
-    println(userAlias.getFieldUser("hello class typeAlias", ::addMessage))
+    userAlias.printUserFields("hello class typeAlias", ::addMessage)
 
     val userInline = User("Kevin", "Tommy", 26)
-    userInline.highInline(user.name,::addMessage)
+    userInline.highInline(user.name,::printFields)
 }

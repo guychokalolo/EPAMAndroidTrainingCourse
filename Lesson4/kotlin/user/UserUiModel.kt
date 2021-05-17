@@ -1,4 +1,4 @@
 package user
 
-class UserUiModel(val name:String, val surName:String) {
+data class UserUiModel(val name:String, val surName:String) {
 }
