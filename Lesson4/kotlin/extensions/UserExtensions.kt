@@ -13,7 +13,7 @@ fun User.printUserFields(message: String, printFields:(String)->Unit)  {
 }
 
 fun User.mapToUseUiModel() = UserUiModel(
-     name = "$name", surName = "$surName"
+     name,surName
 )
 
 inline fun User.highInline(message:String, printFields:( s:String)->Unit) {
