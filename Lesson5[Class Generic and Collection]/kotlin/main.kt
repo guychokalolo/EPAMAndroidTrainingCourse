@@ -11,17 +11,15 @@ fun main(args: Array<String>) {
     val bike = Bike("Salvador", 2, 2017)
 
     val carGarage = Garage(car)
-    val carGarage2 = Garage(bike)
 
     carGarage.addTransport(car)
     println(carGarage.getTransport())
 
-    carGarage2.addTransport(bike)
-    println(carGarage2.getTransport())
+    carGarage.removeTransport(car)
+    println(carGarage.listTransport.count())
 
     val filterTransport = carGarage.getTransport()
         .sortedBy { item -> item.name }
         .filter { it.name == "Lada" }
         .map { it.mapUiModel() }
-
 }

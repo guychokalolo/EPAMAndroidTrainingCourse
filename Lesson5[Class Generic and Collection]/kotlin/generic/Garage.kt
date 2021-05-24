@@ -10,13 +10,15 @@ class Garage<T : Transport>(val transport : T){
         listTransport.add(newTransport)
     }
 
-    fun removeTransport(){
-        when(transport){
-            Transport::class -> listTransport.remove(transport)
+    fun removeTransport(removeTransport : T){
+        if (!listTransport.isEmpty()){
+            listTransport.remove(removeTransport)
+        }else{
+            println("this listTransport is empty")
         }
     }
 
-    fun getTransport() : Set<Transport>{
-        return listTransport.toSet()
+    fun getTransport() : Set<Transport>{ // or List<Transport>
+        return listTransport.toSet()    // or toList()
     }
 }
