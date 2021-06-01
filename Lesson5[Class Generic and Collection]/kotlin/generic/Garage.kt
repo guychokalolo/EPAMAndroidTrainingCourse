@@ -11,11 +11,7 @@ class Garage<T : Transport>(val transport : T){
     }
 
     fun removeTransport(removeTransport : T){
-        if (!listTransport.isEmpty()){
-            listTransport.remove(removeTransport)
-        }else{
-            println("this listTransport is empty")
-        }
+       listTransport.remove(removeTransport)
     }
 
     fun getTransport() : Set<Transport>{ // or List<Transport>
