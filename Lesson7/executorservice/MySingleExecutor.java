@@ -2,7 +2,7 @@ package ru.guychokalolo.executorservice;
 
 public class MySingleExecutor implements Runnable{
 
-    String message;
+    private String message;
 
     public MySingleExecutor(String message) {
         this.message = message;

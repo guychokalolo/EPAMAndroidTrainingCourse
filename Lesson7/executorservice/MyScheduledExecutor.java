@@ -1,20 +1,15 @@
 package ru.guychokalolo.executorservice;
 
-public class MyScheduledExecutor implements Runnable{
+public class MyTask implements Runnable{
 
-    String nameTask;
+    private String nameTask;
 
-    public MyScheduledExecutor(String nameTask) {
+    public MyTask(String nameTask) {
         this.nameTask = nameTask;
     }
 
     @Override
     public void run() {
-        try {
-            System.out.println(Thread.currentThread().getName() +  "(Start) Task =" + nameTask);
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        System.out.println(Thread.currentThread().getName() +  "(Start) Task =" + nameTask);
     }
 }

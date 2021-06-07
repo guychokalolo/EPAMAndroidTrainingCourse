@@ -2,28 +2,30 @@ package ru.guychokalolo.stack;
 
 public class Stack {
 
-    public int element = 0;
+    private int count = 0;
 
     public synchronized void push(){
-        while (element >= 4){
+        while (count != 0){
             try {
                 wait();
             }catch (InterruptedException e){
                 System.out.println("Interruption..");
             }
         }
-        element++;
+        System.out.println(Thread.currentThread().getName()+ "  Push Add new element in Stack..... ");
+        count++;
         notify();
     }
     public synchronized void pop(){
-        while (element < 1){
+        while (count == 0){
             try {
                 wait();
             }catch (InterruptedException e){
                 System.out.println("Interruption..");
             }
         }
-        element--;
+        System.out.println(Thread.currentThread().getName()+ "  Delete element in Stack..... ");
+        count--;
         notify();
     }
 }

@@ -11,10 +11,6 @@ import ru.guychokalolo.stack.StackFactory;
 import java.util.concurrent.*;
 
 public class Main {
-
-    public static TrySameThing trySameThing;
-    public static TryAgain tryAgain;
-
     public static void main(String[] args) {
         runFirstTack();
         runSecondTask();
@@ -24,140 +20,110 @@ public class Main {
         scheduledExecutor();
     }
 
+    public static void runFirstTack(){
+        trySameThing = new TrySameThing();
+        Thread thread1 = new Thread(trySameThing);
+        thread1.start();
+        try {
+            thread1.join();
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        System.out.println(Thread.currentThread().getName()+ "   I am the main Thread!!!!!");
+    }
+
+    public static void runSecondTask(){
+        Stack stack = null;
+
+        StackFactory stackFactory = new StackFactory();
+        FutureTask<Stack> futureTask  = new FutureTask <>(stackFactory1);
+        Thread thread = new Thread(futureTask);
+        thread.start();
+
+        try {
+            stack = futureTask.get();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        PushWorker pushWorker = new PushWorker(stack);
+        PopWorker popWorker = new PopWorker(stack);
+
+        Thread thread1 = new Thread(pushWorker);
+        Thread thread2 = new Thread(popWorker);
+        thread1.start();
+        thread2.start();
+
+        try {
+            Thread.sleep(3000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        thread1.interrupt();
+        thread2.interrupt();
+        System.out.println(Thread.currentThread().getName()+ "   I am the main Thread !!!!!");
+    }
+
     public static void runMySingleExecutor(){
         ExecutorService es = Executors.newSingleThreadExecutor();
-        for(int i = 1; i< 4 ; i++){
+        for(int i = 0; i< 3 ; i++){
             es.submit(new MySingleExecutor("" + i));
         }
         es.shutdown();
 
-        while (!es.isTerminated()) {   }
-
+        while (!es.isTerminated()) {
+            //waiting for executorService's tasks to finish
+        }
         System.out.println("Finished Thread");
     }
 
-
     public static void runMyCachedThread(){
-
-        ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
-        for (int i = 1; i <= 3; i++) {
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        for (int i = 0; i <= 3; i++) {
             MyCachedExecutor myCachedExecutor = new MyCachedExecutor();
-            threadPoolExecutor.execute(myCachedExecutor);
+            executorService.execute(myCachedExecutor);
         }
-        threadPoolExecutor.shutdown();
+        executorService.shutdown();
     }
-
 
     public static void scheduledExecutor(){
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
-        MyScheduledExecutor task1 = new MyScheduledExecutor ("Demo Task 1");
-        MyScheduledExecutor task2 = new MyScheduledExecutor ("Demo Task 2");
+        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(2);
+        MyTask task1 = new MyTask ("Demo Task 1");
+        MyTask task2 = new MyTask ("Demo Task 2");
+        MyTask task3 = new MyTask ("Demo Task 3");
 
-        executor.schedule(task1, 3, TimeUnit.SECONDS);
-        executor.schedule(task2, 3 , TimeUnit.SECONDS);
+        executorService.schedule(task1, 0,SECONDS);
+        executorService.schedule(task2, 3,SECONDS);
+        executorService.schedule(task2, 6,SECONDS);
 
-        executor.shutdown();
-    }
-
-
-    public static void runFirstTack(){
-        trySameThing = new TrySameThing();
-        tryAgain = new TryAgain();
-
-        trySameThing.start();
-        tryAgain.start();
-
-        if(trySameThing.isAlive() || tryAgain.isAlive()){
-            try {
-                trySameThing.join();
-                tryAgain.join();
-            }catch (InterruptedException e){
-
-            }
-        }
-
-        try {
-            Thread.sleep(1000);
-            System.out.println(Thread.currentThread().getName()+ "   I am the main Thread!!!!!");
-        }catch (InterruptedException e){
-            System.out.println("error in the main Thread ");
-        }
-    }
-
-    public static void runSecondTask(){
-        Stack stack = new Stack();
-        StackFactory stackFactory = new StackFactory(stack);
-        PushWorker pushWorker = new PushWorker(stack);
-        PopWorker popWorker = new PopWorker(stack);
-
-        Thread thread = new Thread(stackFactory);
-        Thread threadPush = new Thread(pushWorker);
-        Thread threadPop = new Thread(popWorker);
-
-        thread.start();
-        threadPush.start();
-        threadPop.start();
-
-        System.out.println(Thread.currentThread().getName()+ "   I am the main Thread !!!!!");
+        executorService.shutdown();
     }
 
 
     public static void runMyFixedExecutor(){
         ExecutorService executorService = Executors.newFixedThreadPool(3);
+        ArrayList<Callable<String>> callables = new ArrayList<>();
+        for(int i = 0; i< 5; i++){
+            callables.add(new Callable<String>() {
+                @Override
+                public String call() throws Exception {
 
-        Future<String> future2 = executorService.submit(new Callable<String>() {
-            public String call() throws Exception {
-                int i = 0;
-                System.out.println("Start Task 1");
-                while (i < 10 && !Thread.currentThread().isInterrupted()) {
-                    Thread.sleep(1000);
-                    i++;
+                    return "callable " + Thread.currentThread().getName();
                 }
-                System.out.println("End Task 1");
-                return "Task 1";
-            }
-        });
-
-        Future<String> future3 = executorService.submit(new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                int i = 0;
-                System.out.println("Start Task 3");
-                while (i< 10 && !Thread.currentThread().isInterrupted()){
-                    Thread.sleep(500);
-                    i++;
-                }
-                System.out.println("End Task 3");
-                return "Task 3";
-            }
-        });
-
-        Future<String> future1 = executorService.submit(new Callable<String>() {
-            public String call() throws Exception {
-                int i = 0;
-                System.out.println("Start Task 2 ");
-                while (i < 10 && !Thread.currentThread().isInterrupted()) {
-                    Thread.sleep(500);
-                    i++;
-                }
-                System.out.println("End Task 2");
-                return "Task 2";
-            }
-        });
-
-        executorService.shutdown();
+            });
+        }
 
         try {
-            executorService.awaitTermination(1, TimeUnit.HOURS);
-            System.out.println("result1 = " + future1.get());
-            System.out.println("result2 = " + future2.get());
-            System.out.println("result3 = " + future3.get());
-        } catch (InterruptedException ie) {
-            ie.printStackTrace();
-        } catch (ExecutionException ee) {
-            ee.printStackTrace();
+            List<Future<String>> futures = executorService.invokeAll(callables);
+            for (Future<String> future : futures) {
+                System.out.println("result = " + future.get());
+            }
+        }catch (InterruptedException | ExecutionException e){
+            e.printStackTrace();
         }
+        executorService.shutdown();
+        System.out.println("End of main thread");
     }
+
 }
 
 
